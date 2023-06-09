@@ -56,7 +56,7 @@ class Keylogger:
 
 def write_error(er):
     with open('errors.txt', 'a+')as file:
-        file.write('\n' + str(datetime.datetime.now() + ':   ' + str(er)))
+        file.write('\n' + str(datetime.datetime.now() + ':  ' + str(er)))
 
 if __name__ == "__main__":
     obj = Keylogger()
