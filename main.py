@@ -1,5 +1,5 @@
 import datetime
-from pynput.keyboard import Key, Listener
+from pynput.keyboard import Listener
 
 
 buttons = ['Key.tab', 'Key.ctrl', 'Key.alt', 'Key.left', 'Key.right', 'Key.up', 'Key.down', 'Key.end', 'Key.page_down', 'Key.page_up',
