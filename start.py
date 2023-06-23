@@ -5,12 +5,12 @@ from email.message import EmailMessage
 
 class Email:
     def __init__(self):
-        self.email_sender = ''
+        self.email_sender = '@gmail.com'
         self.ema_password = ''
 
     def sender(self, message):
-        email_receiver = ''
-        subject = 'Alegro'
+        email_receiver = '@gmail.com'
+        subject = ''
 
         em = EmailMessage()
 
